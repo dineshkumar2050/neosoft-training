@@ -1,0 +1,148 @@
+.login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0;
+    position: relative;
+    flex-wrap: wrap;
+}
+.facebook .iconify{
+    font-size: 48px;
+}
+.facebook{
+    margin-right: 10px;
+    color: #ffffff;
+    background-color: #4267B2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    border: solid #4267B2;
+}
+.google{
+    color: #ffffff;
+    background-color: #e8491d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    border: solid #e8491d;
+}
+.login:before{
+    content: "";
+    position:absolute;
+    top: calc(100% + 20px);
+    left: 50%;
+    width: 800px;
+    height: 2px;
+    background: #f4f4f4;
+    transform: translateX(-50%);
+}
+.google .iconify{
+    font-size: 48px;
+}
+.register{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 15px;
+    align-items: center;
+    box-shadow: 0 0 10px 10px whitesmoke;
+    max-width: 700px;
+    margin: 0 auto;
+    border-radius: 5px;
+    border: 1px solid honeydew;
+    position: relative;
+}
+.register form {
+    width: 100%;
+}
+.register h2{
+    margin-left: 20px;
+    font-weight: bolder;
+    font-size: 20px;
+    padding: 30px 0;
+}
+.first_name{
+    width: calc(100% - 40px);
+    height: 36px;
+    border: none;
+    border-radius: 5px;
+    border-bottom: solid 1px #888;
+    outline:none;
+    box-shadow: none;
+    margin-left: 20px;
+    margin-top: -5px;
+    padding-right: 25px;
+}
+.last_name{
+    width: calc(100% - 40px);
+    height: 36px;
+    border: none;
+    border-radius: 5px;
+    border-bottom: solid 1px #888;
+    box-shadow: none;
+    margin-left: 20px;
+    margin-top: 5px;
+    padding-right: 25px;
+}
+.email_address{
+    width: calc(100% - 40px);
+    height: 36px;
+    border: none;
+    border-radius: 5px;
+    border-bottom: solid 1px #888;
+    box-shadow: none;
+    margin-left: 20px;
+    margin-top: 5px;
+    padding-right: 25px;
+}
+.password{
+    width: calc(100% - 40px);
+    height: 36px;
+    border: none;
+    border-radius: 5px;
+    border-bottom: solid 1px #888;
+    box-shadow: none;
+    margin-left: 20px;
+    margin-top: 5px;
+    padding-right: 25px;
+}
+.register p{
+    font-size: 18px;
+    margin-left: 20px;
+    padding: 10px 0;
+}
+.gender{
+    margin-left: 20px;
+    margin-top: 10px;
+}
+.register .submit{
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    padding: 8px 18px;
+    border-bottom: solid 0.1px #ffffff;
+    border-radius: 5px;
+}
+.register .Tr{
+    position: absolute;
+    right: 22px;
+    margin-top: 7px;
+    font-weight: 900;
+}
+.register .iconify{
+    position: absolute;
+    right: 16px;
+    margin-top: 14px;
+    font-weight: 900;   
+}
+button{
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 800px){
+    .login:before{
+        width: calc(100% - 30px);
+    }
+}
