@@ -1,7 +1,133 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import './registration.css';
+import { validateEmail, validatePassword } from '../utils/validation';
+import { register } from '../actions/register';
+import { connect } from 'react-redux';
 
-const Registration = () => {
+const Registration = ({ data, register, ...props }) => {
+    const [submitError, setSubmitError] = useState('');
+    const [formData, setFormData] = useState({
+        firstName:'',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        mobileNumber: '',
+        gender: ''
+    });
+    const [errors,setErrors] = useState({
+        firstNameError: '',
+        lastNameError: '',
+        emailError: '',
+        passwordError: '',
+        confirmPasswordError: '',
+        mobileNumberError: '',
+        genderError: ''
+    });
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(checkBeforeSubmit(formData,errors)){
+            register(formData);
+            console.log('do something')
+        } else {
+            setSubmitError('Please fill all the fields to continue');
+        }
+    }
+    function updateError(name, value){
+        switch(name){
+            case 'firstName':
+                if(!value){
+                    setErrors({ ...errors, firstNameError: `${name} cannot be empty` })
+                } else {
+                    setErrors({ ...errors, firstNameError: '' })
+                }     
+                break;           
+            case 'lastName':
+                if(!value){
+                    setErrors({ ...errors, lastNameError: `${name} cannot be empty` })
+                } else {
+                    setErrors({ ...errors, lastNameError: '' })
+                }
+                break;                
+            case 'email':
+                if(validateEmail(value)){
+                    setErrors({ ...errors, emailError: '' })
+                } else {
+                    setErrors({ ...errors, emailError: `Invalid email address` })
+                }
+                break;                
+            case 'password':
+                if(validatePassword(value)){
+                    setErrors({ ...errors, passwordError: '' })
+                } else {
+                    setErrors({ ...errors, passwordError: `password should be between 8 and 20 digits and must contain atleast one numeric digit, one uppercase and one lowercase letter` })
+                }
+                break;                
+            case 'confirmPassword':
+                if(value === formData.password) {
+                    setErrors({ ...errors, confirmPasswordError: '' })
+                } else {
+                    setErrors({ ...errors, confirmPasswordError: `passwords do not match` })
+                }
+                break;                
+            case 'mobileNumber':
+                if(value && value.length === 10){
+                    setErrors({ ...errors, mobileNumberError: '' })
+                } else {
+                    setErrors({ ...errors, mobileNumberError: `Incorrect mobile number` })
+                }
+                break;                
+            case 'gender':
+                if(!value){
+                    setErrors({ ...errors, genderError: `${name} cannot be empty` })
+                } else {
+                    setErrors({ ...errors, genderError: '' })
+                }
+                break;   
+            default:
+                break;             
+        }
+    }
+    function checkBeforeSubmit(formData, errors){
+        let formValues = Object.values(formData);
+        let errorValues = Object.values(errors);
+        let formErrors = formValues.some(val => !val);
+        let errorsPresent = errorValues.some(val =>  val);
+        if(formErrors || errorsPresent){
+            return false;
+        }
+        return true;
+    }
+    const handleChange = e => {
+        setSubmitError('');
+        const { name, value } = e.target;
+        switch(name){
+            case 'firstName':
+                setFormData({ ...formData, firstName: value });     
+                break;           
+            case 'lastName':
+                setFormData({ ...formData, lastName: value });
+                break;                
+            case 'email':
+                setFormData({ ...formData, email: value });
+                break;                
+            case 'password':
+                setFormData({ ...formData, password: value });
+                break;                
+            case 'confirmPassword':
+                setFormData({ ...formData, confirmPassword: value });
+                break;                
+            case 'mobileNumber':
+                setFormData({ ...formData, mobileNumber: value });
+                break;                
+            case 'gender':
+                setFormData({ ...formData, gender: value });
+                break;
+            default:
+                break;                
+        }
+        updateError(name,value);
+    };
     return(
         <>
             <div className="login">
@@ -21,25 +147,75 @@ const Registration = () => {
             <div className="register">
                 <form className="formapp">
                     <h2>Register to NeoSTORE</h2>
-                    <input type="text" className="first_name" placeholder="First Name" /><span style={{marginTop: '0px'}} className="Tr">Tr</span>
-                    <br/>
-                    <input type="text" className="last_name" placeholder="Last Name" /><span className="Tr">Tr</span>
-                    <br/>
-                    <input type="email" className="email_address" placeholder="Email Address" /><span className="iconify" data-icon="carbon:email" data-inline="false"></span>
-                    <br/>
-                    <input type="password" className="password" placeholder="Password" /><span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                    <div>
+                        <div>
+                            <input onChange={handleChange} name='firstName' type="text" className="first_name" placeholder="First Name" />
+                            <span style={{marginTop: '0px'}} className="Tr">Tr</span>
+                        </div>                        
+                        {errors.firstNameError && <span className='error'>{errors.firstNameError}</span>}
+                    </div>
+                    <div>
+                        <div>
+                            <input onChange={handleChange} name='lastName' type="text" className="last_name" placeholder="Last Name" />
+                            <span className="Tr">Tr</span>
+                        </div>
+                        {errors.lastNameError && <span className='error'>{errors.lastNameError}</span>}
+                    </div>
+                    <div>
+                        <div>
+                            <input onChange={handleChange} name='email' type="email" className="email_address" placeholder="Email Address" />
+                            <span className="iconify" data-icon="carbon:email" data-inline="false"></span>
+                        </div>
+                        {errors.emailError && <span className='error'>{errors.emailError}</span>}
+                    </div>
+                    <div>
+                        <div>
+                            <input onChange={handleChange} name='password' type="password" className="password" placeholder="Password" />
+                            <span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                        </div>
+                        {errors.passwordError && <span className='error'>{errors.passwordError}</span>}
+                    </div>
                     <p>8-12 Alphanumeric characters</p>
-                    <input type="password" className="password" placeholder="Confirm Password" /><span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                    <div>
+                        <div>
+                            <input onChange={handleChange} name='confirmPassword' type="password" className="password" placeholder="Confirm Password" />
+                            <span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                        </div>
+                        {errors.confirmPasswordError && <span className='error'>{errors.confirmPasswordError}</span>}
+                    </div>
                     <p>8-12 Alphanumeric characters</p>
-                    <input type="number" className="password" placeholder="Mobile Number" /><span className="iconify" data-icon="fluent:call-32-filled" data-inline="false"></span>
+                    <div>
+                        <div>
+                            <input onChange={handleChange} min='0000000000' max='9999999999' name='mobileNumber' type="number" className="password" placeholder="Mobile Number" />
+                            <span className="iconify" data-icon="fluent:call-32-filled" data-inline="false"></span>
+                        </div>
+                        {errors.mobileNumberError && <span className='error'>{errors.mobileNumberError}</span>}
+                    </div>
                     <p>Max 10</p>
-                    <input type="radio" name="gender" className="gender" value="male" /> Male <input type="radio" name="gender" value="female" /> Female
-                    <br/>
-                    <button type="submit" className="submit">Register</button>
+                    <div>
+                        <div className='d-flex align-items-center'>
+                            <div className='mr-5'>
+                                <input onChange={handleChange} type="radio" name="gender" id='male' className="gender" value="male" /> 
+                                <label htmlFor='male'>Male</label>                         
+                            </div>
+                            <div>
+                                <input onChange={handleChange} type="radio" name="gender" id='female' className="gender" value="female" /> 
+                                <label htmlFor='female'>Female</label>
+                            </div>
+                        </div>
+                        {errors.genderError && <span className='error'>{errors.genderError}</span>}
+                    </div>
+                    
+                    <button onClick={handleSubmit} type="submit" className="submit">Register</button>
+                    {submitError && <span className='error'>{submitError}</span>}
                 </form>
             </div>
         </>
     )
 }
 
-export default Registration;
+const mapStateToProps = state => ({
+    data: state.register
+});
+
+export default connect(mapStateToProps, {register})(Registration);

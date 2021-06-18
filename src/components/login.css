@@ -38,6 +38,17 @@ input:focus,input:hover{
     padding: 0!important;
 }
 
+.email,.pass{
+    position: relative;
+}
+
+.login-error{
+    position: absolute;
+    margin: 0;
+    left:0;
+    bottom: 0;
+}
+
 span{
     display: inline-block;
     margin: 0 20px;
