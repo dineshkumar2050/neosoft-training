@@ -1,0 +1,110 @@
+.bottom-section{
+    border-top: 1px solid #f1f1f1;
+    margin-top: 20px;
+    padding-top: 20px;
+    ul{
+        &.navlist{
+            border-bottom: none;
+            li{
+                button{
+                    font-size: 20px;
+                    &.nav-button{
+                        border-bottom: 2px solid #0d6efd!important;
+                    }
+                    &.nav-button.active{
+                        border-bottom: 2px solid #000!important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+span{
+    margin: 0;
+    display: inline-block;
+    &.label{
+        font-weight: bold;
+        margin-right: 15px!important;
+    }
+    &.text-lg{
+        font-size: 20px;
+    }
+    &.price{
+        color: rgba(116,214,120,0.6);
+        font-weight: bold;
+    }
+    &.color{
+        width: 30px;
+        height: 15px;
+        background: #3f4174;
+    }
+}
+
+.icon{
+    .iconify{
+        font-size: 18px;
+    }
+}
+
+.product-detail{
+    margin-top: 80px;
+    .left-section{
+        overflow: hidden;
+        img {
+            &.hover-zoom{
+                &:hover{
+                    transform: scale(1.75);
+                }
+            }
+        }
+    }
+    .border-bt{
+        border-bottom: 1px solid #888;
+    }
+    .social-icons{
+        .icon{
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-wrap: wrap;
+            margin-right: 15px;
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+        .facebook{
+            background: #4663ac;
+        }
+        .google{
+            background: #dc443e;
+        }
+        .whatsapp{
+            background: #74d678;
+        }
+        .pinterest{
+            background: #bf392a;
+        }
+        .twitter{
+            background: #49abe8;
+        }
+    }
+    .buttons{
+        button{
+            color: #fff;
+            font-size: 12px;
+            border-radius: 3px;
+            &.add-to-cart{
+                background: #49abe8;
+                margin-right: 20px;
+            }
+            &.rate-product{
+                background: #754b1f;
+            }
+        }
+    }
+}

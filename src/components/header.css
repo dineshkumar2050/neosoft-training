@@ -1,3 +1,50 @@
+ .top-icon,.middle-icon{
+    width: 30px;
+    height: 2px;
+    background-color: #fff;
+    /* background-color: transparent; */
+    /* position: absolute;
+    right: 0; */
+}
+
+.middle-icon{
+    width: 20px;
+    margin-right: 11px; 
+}
+
+.open-button,.close-button{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    z-index: 20000;
+    transition: 300ms all ease-in-out;
+}
+.close-button{
+    margin-top: 50px;
+    transform: translateX(calc(-50vw + 40px));
+    transition: 300ms all ease-in-out;
+}
+.close-button .middle-icon{
+    display: none;
+}
+
+.close-button .top-icon{
+    margin-top:-2px;
+    transform: rotateZ(45deg);
+}
+
+.close-button .bottom-icon{
+    margin-bottom:1px;
+    transform: rotateZ(-45deg);
+}
+
 header{
     background-color: black;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -26,6 +73,7 @@ header{
 .navbar{
     color: #ffffff;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: relative;
 }
 .navbar ul{
     display: flex;
@@ -89,6 +137,37 @@ header{
     }
     .last .search input{
         width: 100%;
+    }
+}
+
+@media only screen and (max-width: 575px){
+    .navbar .show-on-mobile{
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        right: -100vw;
+        top: 0;
+        background: rgba(0,0,0,0.9);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 120px;
+        transition: 300ms all ease-in-out;
+    }
+    .navbar .show-on-mobile li{
+        font-size: 20px;
+    }
+    .navbar .show-on-mobile li:not(:last-child){
+        margin-bottom: 30px;
+    }
+    body.hide{
+        overflow: hidden;
+    }
+    .navbar .show-on-mobile.shift-left{
+        right:0;
+        transition: 300ms all ease-in-out;
     }
 }
 

@@ -1,11 +1,13 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import './registration.css';
-import { validateEmail, validatePassword } from '../utils/validation';
+import { validateEmail, validatePassword, checkValidName } from '../utils/validation';
 import { register } from '../actions/register';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const Registration = ({ data, register, ...props }) => {
     const [submitError, setSubmitError] = useState('');
+    const history = useHistory();
     const [formData, setFormData] = useState({
         firstName:'',
         lastName: '',
@@ -27,8 +29,7 @@ const Registration = ({ data, register, ...props }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(checkBeforeSubmit(formData,errors)){
-            register(formData);
-            console.log('do something')
+            register({...formData});
         } else {
             setSubmitError('Please fill all the fields to continue');
         }
@@ -38,6 +39,8 @@ const Registration = ({ data, register, ...props }) => {
             case 'firstName':
                 if(!value){
                     setErrors({ ...errors, firstNameError: `${name} cannot be empty` })
+                } else if(value && !checkValidName(value)){
+                    setErrors({ ...errors, firstNameError: `white spaces,numbers & special characters not allowed` }) 
                 } else {
                     setErrors({ ...errors, firstNameError: '' })
                 }     
@@ -45,6 +48,8 @@ const Registration = ({ data, register, ...props }) => {
             case 'lastName':
                 if(!value){
                     setErrors({ ...errors, lastNameError: `${name} cannot be empty` })
+                } else if(value && !checkValidName(value)){
+                    setErrors({ ...errors, lastNameError: `white spaces,numbers & special characters not allowed` }) 
                 } else {
                     setErrors({ ...errors, lastNameError: '' })
                 }
@@ -56,11 +61,11 @@ const Registration = ({ data, register, ...props }) => {
                     setErrors({ ...errors, emailError: `Invalid email address` })
                 }
                 break;                
-            case 'password':
+            case 'password':                
                 if(validatePassword(value)){
                     setErrors({ ...errors, passwordError: '' })
                 } else {
-                    setErrors({ ...errors, passwordError: `password should be between 8 and 20 digits and must contain atleast one numeric digit, one uppercase and one lowercase letter` })
+                    setErrors({ ...errors, passwordError: `password should be between 8 and 12 digits and must contain atleast one numeric digit, one uppercase and one lowercase letter` })
                 }
                 break;                
             case 'confirmPassword':
@@ -128,16 +133,44 @@ const Registration = ({ data, register, ...props }) => {
         }
         updateError(name,value);
     };
+    const showHidePassword = (e,id) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        let typeVal = element && element.type;
+        if(typeVal === 'password'){
+            element.type = 'text';
+            return;
+        } else {
+            element.type = 'password';
+            return;
+        }
+    }
+    useEffect(() => {
+        if(formData){
+            if(formData.password === formData.confirmPassword) {
+                setErrors({ ...errors, confirmPasswordError: '' })
+            } else {
+                setErrors({ ...errors, confirmPasswordError: `passwords do not match` })
+            }
+        }
+    },[formData.password,formData.confirmPassword]);
+    useEffect(() => {
+        if(data && data.success && !data.loading && !data.error){
+            history.push({
+                pathname: '/'
+            })
+        }
+    },[data]);
     return(
         <>
             <div className="login">
-                <button type="button" className="facebook">
+                <button type="button" className="facebook mb-2 mb-sm-0">
                     <div className="facebook">
                         <span className="iconify" data-icon="ri:facebook-fill" data-inline="false"></span>
                         <p>Login with Facebook</p>
                     </div>
                 </button>
-                <button type="button" className="google">
+                <button type="button" className="google mb-sm-0 mb-2">
                     <div className="google">
                         <span className="iconify" data-icon="akar-icons:google-fill" data-inline="false"></span>
                         <p>Login with Google</p>
@@ -162,32 +195,40 @@ const Registration = ({ data, register, ...props }) => {
                         {errors.lastNameError && <span className='error'>{errors.lastNameError}</span>}
                     </div>
                     <div>
-                        <div>
+                        <div className='d-flex justify-content-between align-items-center parent'>
                             <input onChange={handleChange} name='email' type="email" className="email_address" placeholder="Email Address" />
-                            <span className="iconify" data-icon="carbon:email" data-inline="false"></span>
+                            <button type='button' className='unset-css'>
+                                <span className="iconify" data-icon="carbon:email" data-inline="false"></span>
+                            </button>
                         </div>
                         {errors.emailError && <span className='error'>{errors.emailError}</span>}
                     </div>
                     <div>
-                        <div>
-                            <input onChange={handleChange} name='password' type="password" className="password" placeholder="Password" />
-                            <span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                        <div  className='d-flex justify-content-between align-items-center parent'>
+                            <input onChange={handleChange} name='password' id='password' type="password" className="password" placeholder="Password" />
+                            <button type='button' className='unset-css' onClick={e => showHidePassword(e,'password')}>
+                                <span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                            </button>
                         </div>
                         {errors.passwordError && <span className='error'>{errors.passwordError}</span>}
                     </div>
-                    <p>8-12 Alphanumeric characters</p>
+                    <p className='para-msg'>8-12 Alphanumeric characters</p>
                     <div>
-                        <div>
-                            <input onChange={handleChange} name='confirmPassword' type="password" className="password" placeholder="Confirm Password" />
-                            <span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                        <div  className='d-flex justify-content-between align-items-center parent'>
+                            <input onChange={handleChange} name='confirmPassword' id='confirmPassword' type="password" className="password" placeholder="Confirm Password" />
+                            <button type='button' className='unset-css' onClick={e => showHidePassword(e,'confirmPassword')}>
+                                <span className="iconify" data-icon="bx:bx-show" data-inline="false"></span>
+                            </button>
                         </div>
                         {errors.confirmPasswordError && <span className='error'>{errors.confirmPasswordError}</span>}
                     </div>
-                    <p>8-12 Alphanumeric characters</p>
+                    <p className='para-msg'>8-12 Alphanumeric characters</p>
                     <div>
-                        <div>
+                        <div className='d-flex justify-content-between align-items-center parent'>
                             <input onChange={handleChange} min='0000000000' max='9999999999' name='mobileNumber' type="number" className="password" placeholder="Mobile Number" />
-                            <span className="iconify" data-icon="fluent:call-32-filled" data-inline="false"></span>
+                            <button type='button' className='unset-css'>
+                                <span className="iconify" data-icon="fluent:call-32-filled" data-inline="false"></span>
+                            </button>
                         </div>
                         {errors.mobileNumberError && <span className='error'>{errors.mobileNumberError}</span>}
                     </div>

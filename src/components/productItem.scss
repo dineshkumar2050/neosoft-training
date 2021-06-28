@@ -1,0 +1,40 @@
+span{
+    display: inline-block;
+}
+
+.img{
+    max-height: 260px;
+    overflow: hidden;
+    img{
+        max-height: inherit;
+    }
+}
+
+.card {
+    box-shadow: 0 0 10px 10px #f4f4f4;
+}
+
+a{
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.item-price{
+    display: inline-block;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+button{
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+}
+
+@media only screen and (max-width: 767px){
+    .img{
+        max-height: 180px;
+    }
+}

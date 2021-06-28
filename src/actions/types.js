@@ -1,3 +1,6 @@
 export const REGISTER = 'REGISTER';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const GET_ALL_CATEGORIES = 'GET_ALL_CATEGORIES';
+export const GET_AVAILABLE_PRODUCTS = 'GET_AVAILABLE_PRODUCTS';
+export const GET_ALL_COLORS = 'GET_ALL_COLORS';

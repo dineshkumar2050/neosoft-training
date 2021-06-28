@@ -27,7 +27,7 @@ const Footer = () => {
                         <h2 className="mb-4">Newsletter</h2>
                         <p>Signup to get exclusive offer from our favorite brands and to</p>
                         <p>be well up in the news</p>
-                        <input className="newsletter" type="email" placeholder="your email..." />
+                        <input className="newsletter mb-3 p-2" type="email" placeholder="your email..." />
                         <br/>
                         <button className="subscribe" type="submit">Subscribe</button>
                     </div>

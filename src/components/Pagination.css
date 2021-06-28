@@ -1,0 +1,21 @@
+.page-item{
+    border: 1px solid #0d6efd;
+}
+.page-item button{
+    height: 100%;
+}
+/* .page-item.next{
+    border-left:none!important;
+} */
+/* .page-item.prev{
+    border-right:none!important;
+} */
+.page-item.disabled{
+    border: 1px solid #000;
+}
+.page-item.active{
+    border: 1px solid #0d6efd;
+}
+.active button{
+    border: 1px solid #0d6efd;
+}

@@ -120,6 +120,15 @@ label{
     margin-left: 20px;
     padding: 10px 0;
 }
+.parent{
+    position: relative;
+}
+.unset-css{
+    border: none;
+    background:transparent;
+    position: absolute;
+    right: 13px;
+}
 .gender{
     margin-left: 20px;
     margin-top: 10px;
@@ -129,21 +138,24 @@ label{
     margin-top: 10px;
     margin-bottom: 12px;
     padding: 8px 18px;
-    border-bottom: solid 0.1px #ffffff;
+    border: solid 1px #000;
     border-radius: 5px;
+}
+.register .para-msg{
+    font-size: 10px;
 }
 .register .Tr{
     position: absolute;
-    right: 22px;
+    right: -4px;
     margin-top: 7px;
     font-weight: 900;
 }
-.register .iconify{
+/* .register .iconify{
     position: absolute;
     right: 16px;
     margin-top: 14px;
     font-weight: 900;   
-}
+} */
 button{
     cursor: pointer;
 }

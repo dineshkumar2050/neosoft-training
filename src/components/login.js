@@ -1,12 +1,14 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import './login.css';
 import './registration.css';
 import { validateEmail, validatePassword } from '../utils/validation';
 import { login } from '../actions/login';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const Login = ({data, login, ...props}) => {
     const [submitError, setSubmitError] = useState('');
+    const history = useHistory();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -18,7 +20,7 @@ const Login = ({data, login, ...props}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(checkBeforeSubmit(formData,errors)){
-            login(formData);
+            login({...formData});
             console.log('do something')
         } else {
             setSubmitError('Please fill all the fields to continue');
@@ -69,6 +71,21 @@ const Login = ({data, login, ...props}) => {
         }
         updateError(name,value);
     };
+    const handleRedirect = (e,type) => {
+        e.preventDefault();
+        if(type === 'register'){
+            history.push('/register');
+        } else if(type === 'forgot'){
+            history.push('/forgot-password');
+        }
+    };
+    useEffect(() => {
+        if(data && data.success && !data.loading && !data.error){
+            history.push({
+                pathname: '/dashboard'
+            })
+        }
+    },[data]);
     return(
         <div className="content">
             <div className="login-with-info login">
@@ -105,9 +122,9 @@ const Login = ({data, login, ...props}) => {
                                 {errors.passwordError && <span className='error login-error'>{errors.passwordError}</span>}
                             </div>
                             <div className='options d-flex align-items-center mb-3'>
-                                <button className='text-button' type='button'>Register Now</button>
+                                <button onClick={e => handleRedirect(e,'register')} className='text-button' type='button'>Register Now</button>
                                 <span>{' |  '}</span>
-                                <button className='text-button' type='button'>Forgotten</button>
+                                <button onClick={e => handleRedirect(e,'forgot')} className='text-button' type='button'>Forgotten</button>
                             </div>
                             <div>
                                 <button onClick={handleSubmit} className='btn-primary btn-lg' type='button'>Login</button> 

@@ -1,16 +1,16 @@
-import { LOGIN } from '../actions/types';
+import { GET_AVAILABLE_PRODUCTS } from '../actions/types';
 
 const initialState = {
+    loading: true,
     error: null,
-    success: null,
-    data: null,
-    loading: true
+    success: false,
+    data: null
 }
 
-export default function login(state=initialState,action){
+export default function products(state=initialState,action){
     const { type, payload } = action;
     switch(type){
-        case LOGIN:
+        case GET_AVAILABLE_PRODUCTS:
             return {
                 ...state,
                 error: payload.err && !payload.data ? payload.err : null,
@@ -18,7 +18,8 @@ export default function login(state=initialState,action){
                 data: payload.data && !payload.err ? payload.data : null,
                 loading: false
             }
+            break;
         default:
             return state;
     }
-};
+}
