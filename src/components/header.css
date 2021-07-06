@@ -7,6 +7,10 @@
     right: 0; */
 }
 
+li a {
+    cursor: pointer;
+}
+
 .middle-icon{
     width: 20px;
     margin-right: 11px; 
@@ -84,6 +88,26 @@ header{
 .navbar ul li{
     list-style: none;
     padding: 0 30px 0 30px;
+}
+.cart{
+    position: relative;
+}
+.cart-products-count{
+    position: absolute;
+    background-color: tomato;
+    color: #fff!important;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 23px;
+    top: 2px;
+}
+.cart-content{
+    margin-left: 10px;
 }
 .search form input{
     padding-top: 10px;

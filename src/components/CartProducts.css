@@ -1,0 +1,26 @@
+.cart-products{
+    margin-top: 80px;
+}
+
+.content{
+    margin-top: 80px;
+}
+
+.inner-content{
+    box-shadow: 0 0 5px 5px #f4f4f4;
+}
+
+.product-main-info img{
+    max-width: 70px;
+}
+
+.labels, .list-of-products-item{
+    display: grid;
+    grid-template-columns: 4fr 2fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-row-gap: 15px;
+}
+
+.price,.total{
+    text-align: right;
+}

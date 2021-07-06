@@ -7,6 +7,14 @@
     margin-right: 15px;
 }
 
+.options button:first-child{
+    margin-right: 15px;
+}
+
+.options button:last-child{
+    margin-left: 15px;
+}
+
 .login-form{
     max-width: 800px;
     padding: 20px;

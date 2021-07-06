@@ -20,12 +20,13 @@
     }
 }
 
-span{
+.product-detail span{
     margin: 0;
     display: inline-block;
     &.label{
         font-weight: bold;
         margin-right: 15px!important;
+        width: auto; 
     }
     &.text-lg{
         font-size: 20px;

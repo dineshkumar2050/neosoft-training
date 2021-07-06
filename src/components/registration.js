@@ -4,10 +4,12 @@ import { validateEmail, validatePassword, checkValidName } from '../utils/valida
 import { register } from '../actions/register';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import Spinner from '../layout/Spinner';
 
 const Registration = ({ data, register, ...props }) => {
     const [submitError, setSubmitError] = useState('');
     const history = useHistory();
+    const [isLoading, setIsLoading] = useState(null);
     const [formData, setFormData] = useState({
         firstName:'',
         lastName: '',
@@ -29,7 +31,9 @@ const Registration = ({ data, register, ...props }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(checkBeforeSubmit(formData,errors)){
+            setIsLoading(true);
             register({...formData});
+            setIsLoading(false);
         } else {
             setSubmitError('Please fill all the fields to continue');
         }
@@ -162,6 +166,8 @@ const Registration = ({ data, register, ...props }) => {
         }
     },[data]);
     return(
+        isLoading ? 
+        <Spinner /> : 
         <>
             <div className="login">
                 <button type="button" className="facebook mb-2 mb-sm-0">

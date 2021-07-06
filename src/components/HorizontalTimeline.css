@@ -1,0 +1,29 @@
+.circle{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    color: #FFF;
+    background: #757575;
+    position: relative;
+}
+
+.middle-line{
+    position: absolute;
+    left: 25px;
+    top: 11.5px;
+    background: grey;
+}
+
+/* .timeline-item{
+    position: relative;
+} */
+
+.horizontal-timeline{
+    position: relative;
+}
+
+.circle .bottom-text{
+    color: #000;
+    position: absolute;
+    top: 30px;
+}

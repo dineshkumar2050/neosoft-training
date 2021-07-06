@@ -1,0 +1,37 @@
+.account-heading{
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.profile-image{
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.profile-image img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.option{
+    margin-left: 15px;
+    color: blue;
+}
+
+.single-order{
+    border-radius: 4px;
+    box-shadow: 0 0 5px 5px #f4f4f4;
+}
+
+.person-name{
+    color: red;
+}
+
+.top-order-section,.middle-order-section{
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.middle-order-section img {
+    max-width: 100px;
+}

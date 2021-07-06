@@ -1,0 +1,14 @@
+.change-button{
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quantity{
+    background: #C5C5C5;
+}

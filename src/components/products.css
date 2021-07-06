@@ -2,6 +2,17 @@
     padding: 80px 40px 0 40px;
 }
 
+.product-list-item{
+    max-width: 232px;
+}
+
+.product-list-item a{
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
 @media only screen and (max-width: 767px){
     .products{
         padding: 80px 15px 0 15px;

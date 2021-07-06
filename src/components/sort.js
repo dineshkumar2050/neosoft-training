@@ -20,17 +20,17 @@ function Sort({method, arr, setArr, ...props}) {
             <h2 className={'px-2'}>Sort By</h2>
             {'|'}
             <Button type='button' onClick={e => handleSort(e,'rating')}>
-                <span class="iconify" data-icon="bx:bxs-star" data-inline="false"></span>
+                <span className="iconify" data-icon="bx:bxs-star" data-inline="false"></span>
             </Button>
             {'|'}
             <Button type='button' onClick={e => handleSort(e,'price-ascending')}>
                 <span className={'mx-0'}>&#8377;</span>
-                <span class="iconify" data-icon="akar-icons:arrow-up" data-inline="false"></span>
+                <span className="iconify" data-icon="akar-icons:arrow-up" data-inline="false"></span>
             </Button>
             {'|'}
             <Button type='button' onClick={e => handleSort(e,'price-descending')}>
                 <span className={'mx-0'}>&#8377;</span>
-                <span class="iconify" data-icon="akar-icons:arrow-down" data-inline="false"></span>
+                <span className="iconify" data-icon="akar-icons:arrow-down" data-inline="false"></span>
             </Button>
         </div>
     )

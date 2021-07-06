@@ -5,10 +5,12 @@ import { validateEmail, validatePassword } from '../utils/validation';
 import { login } from '../actions/login';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import Spinner from '../layout/Spinner';
 
 const Login = ({data, login, ...props}) => {
     const [submitError, setSubmitError] = useState('');
     const history = useHistory();
+    const [isLoading, setIsLoading] = useState(null);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -17,11 +19,12 @@ const Login = ({data, login, ...props}) => {
         emailError: '',
         passwordError: '',
     });
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if(checkBeforeSubmit(formData,errors)){
-            login({...formData});
-            console.log('do something')
+            setIsLoading(true);
+            await login({...formData});
+            setIsLoading(false);
         } else {
             setSubmitError('Please fill all the fields to continue');
         }
@@ -87,54 +90,56 @@ const Login = ({data, login, ...props}) => {
         }
     },[data]);
     return(
-        <div className="content">
-            <div className="login-with-info login">
-                <button type="button" className="facebook mb-3">
-                    <div className="facebook">
-                        <span className="iconify" data-icon="ri:facebook-fill" data-inline="false"></span>
-                        <p>Login with Facebook</p>
+        isLoading ?
+            <Spinner /> :        
+            <div className="content">
+                    <div className="login-with-info login">
+                    <button type="button" className="facebook mb-3">
+                        <div className="facebook">
+                            <span className="iconify" data-icon="ri:facebook-fill" data-inline="false"></span>
+                            <p>Login with Facebook</p>
+                        </div>
+                    </button>
+                    <button type="button" className="google mb-3">
+                        <div className="google">
+                            <span className="iconify" data-icon="akar-icons:google-fill" data-inline="false"></span>
+                            <p>Login with Google</p>
+                        </div>
+                    </button>
+                    <button type="button" className="google twitter mb-3">
+                        <div className="twitter google">
+                            <span className="iconify" data-icon="akar-icons:twitter-fill" data-inline="false"></span>
+                            <p>Login with Twitter</p>
+                        </div>
+                    </button>
+                </div>
+                <div className="login-form">
+                    <div>
+                        <h2>Login to NeoSTORE</h2>
+                        <form>
+                            <fieldset>
+                                <div className='email'>
+                                    <input name='email' onChange={handleChange} placeholder='Email Address' type='text' />
+                                    {errors.emailError && <span className='error login-error'>{errors.emailError}</span>}
+                                </div>
+                                <div className='pass'>
+                                    <input name='password' onChange={handleChange} placeholder='Password' type='password' />
+                                    {errors.passwordError && <span className='error login-error'>{errors.passwordError}</span>}
+                                </div>
+                                <div className='options d-flex align-items-center mb-3'>
+                                    <button onClick={e => handleRedirect(e,'register')} className='text-button' type='button'>Register Now</button>
+                                    <span>{' |  '}</span>
+                                    <button onClick={e => handleRedirect(e,'forgot')} className='text-button' type='button'>Forgotten</button>
+                                </div>
+                                <div>
+                                    <button onClick={handleSubmit} className='btn-primary btn-lg' type='button'>Login</button> 
+                                    {submitError && <span className='error d-block mt-3 m-0'>{submitError}</span>}
+                                </div>                           
+                            </fieldset>
+                        </form>
                     </div>
-                </button>
-                <button type="button" className="google mb-3">
-                    <div className="google">
-                        <span className="iconify" data-icon="akar-icons:google-fill" data-inline="false"></span>
-                        <p>Login with Google</p>
-                    </div>
-                </button>
-                <button type="button" className="google twitter mb-3">
-                    <div className="twitter google">
-                        <span className="iconify" data-icon="akar-icons:twitter-fill" data-inline="false"></span>
-                        <p>Login with Twitter</p>
-                    </div>
-                </button>
-            </div>
-            <div className="login-form">
-                <div>
-                    <h2>Login to NeoSTORE</h2>
-                    <form>
-                        <fieldset>
-                            <div className='email'>
-                                <input name='email' onChange={handleChange} placeholder='Email Address' type='text' />
-                                {errors.emailError && <span className='error login-error'>{errors.emailError}</span>}
-                            </div>
-                            <div className='pass'>
-                                <input name='password' onChange={handleChange} placeholder='Password' type='password' />
-                                {errors.passwordError && <span className='error login-error'>{errors.passwordError}</span>}
-                            </div>
-                            <div className='options d-flex align-items-center mb-3'>
-                                <button onClick={e => handleRedirect(e,'register')} className='text-button' type='button'>Register Now</button>
-                                <span>{' |  '}</span>
-                                <button onClick={e => handleRedirect(e,'forgot')} className='text-button' type='button'>Forgotten</button>
-                            </div>
-                            <div>
-                                <button onClick={handleSubmit} className='btn-primary btn-lg' type='button'>Login</button> 
-                                {submitError && <span className='error d-block mt-3 m-0'>{submitError}</span>}
-                            </div>                           
-                        </fieldset>
-                    </form>
                 </div>
             </div>
-        </div>
     )
 }
 

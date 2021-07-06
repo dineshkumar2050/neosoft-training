@@ -7,15 +7,25 @@ import Chair from '../assets/chair.webp';
 import { connect } from 'react-redux';
 import { getAvailableProducts } from '../actions/products';
 import PropTypes from 'prop-types';
+import Spinner from '../layout/Spinner';
+import { useHistory } from 'react-router-dom';
 
-const Dashboard = ({getAvailableProducts,data, ...props}) => {
+const Dashboard = ({getAvailableProducts,data,isAuthenticated, ...props}) => {
     const [productsData, setProductsData] = useState([]);
     const [carouselData, setCarouselData] = useState([]);
+    // const [isLoading, setIsLoading] = useState(null);
+    const history = useHistory();
     const viewAllButton = e => {
         e.preventDefault();
     }
+    async function getProducts(){
+        await getAvailableProducts();
+        return;
+    }
     useEffect(() => {
-        getAvailableProducts();
+        // setIsLoading(true);
+        getProducts();
+        // setIsLoading(false);
     },[]);
     useEffect(() => {
         if(data && data.data && data.data.data && data.data.data.docs && data.success && !data.loading && !data.error){
@@ -42,7 +52,13 @@ const Dashboard = ({getAvailableProducts,data, ...props}) => {
             setCarouselData([...resultArr]);
         }
     },[productsData]);
+    if(!isAuthenticated){
+        return history.push({ pathname: '/' })
+    }
+    console.log('data',isAuthenticated);
     return(
+        data && data.loading ? 
+        <Spinner /> :
         <div className='dashboard text-center container'>
             <div className='carousel'>
                 <Carousel>
@@ -88,11 +104,13 @@ const Dashboard = ({getAvailableProducts,data, ...props}) => {
 
 Dashboard.propTypes = {
     data: PropTypes.object,
-    getAvailableProducts: PropTypes.func
+    getAvailableProducts: PropTypes.func,
+    isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = state => ({
-    data: state.products
+    data: state.products,
+    isAuthenticated: state.login.isAuthenticated,
 })
 
 export default connect(mapStateToProps, { getAvailableProducts })(Dashboard);

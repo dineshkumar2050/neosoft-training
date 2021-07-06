@@ -1,0 +1,12 @@
+.addresses{
+    box-shadow: 0 0 5px 5px #f4f4f4;
+}
+
+.address{
+    box-shadow: 0 0 5px 5px #f4f4f4;
+    border-radius: 4px;
+}
+
+.cross-button svg{
+    font-size: 30px;
+}

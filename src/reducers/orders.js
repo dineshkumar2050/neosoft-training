@@ -1,41 +1,31 @@
-import { GET_ALL_COLORS, ADD_COLOR } from '../actions/types';
+import { GET_ORDERS, PLACE_ORDER } from '../actions/types';
 
 const initialState = {
     loading: true,
     error: null,
     success: false,
-    data: null
+    orders: null,
+    orderPlacedData: null
 }
 
-export default function colors(state=initialState,action){
-    const { data } = state;
+export default function orders(state=initialState,action){
     const { type, payload } = action;
     switch(type){
-        case GET_ALL_COLORS:
+        case GET_ORDERS:
             return {
                 ...state,
                 error: payload.err && !payload.data ? payload.err : null,
                 success: payload.data && !payload.err ? true : false,
-                data: payload.data && !payload.err ? payload.data : [],
+                orders: payload.data && payload.data.data && payload.data.data.orders && !payload.err ? payload.data.data.orders : null,
                 loading: false
             }
             break;
-        case ADD_COLOR:
-            if(payload.data && payload.data.data){
-                if(data ){
-                    if(!data.data){
-                        data.data = [];
-                        data.data.push({ ...payload.data.data })
-                    } else {
-                        data.data.push({ ...payload.data.data })
-                    }
-                } 
-            }
+        case PLACE_ORDER:
             return {
                 ...state,
                 error: payload.err && !payload.data ? payload.err : null,
                 success: payload.data && !payload.err ? true : false,
-                data,
+                orderPlacedData: payload.data && payload.data.data && !payload.err ? payload.data.data : null,
                 loading: false
             }
             break;

@@ -1,14 +1,23 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
 import './productItem.scss';
 import Chair from '../assets/chair.webp';
 import PropTypes from 'prop-types';
 import Ratings from './Ratings';
+import { connect } from 'react-redux';
+import { addProductToCart, getCartProducts } from '../actions/cart';
+import BootstrapSpinner from '../layout/BootstrapSpinner';
 
-const ProductItem = ({item, keyVal, name, src, price, rating, className}) => {
-    const addToCart = (e) => {
+const ProductItem = ({ cartData, addProductToCart, getCartProducts, item, keyVal, name, src, price, rating, className }) => {
+    const [loading, setLoading] = useState(null);
+    const addToCart = async (e,id) => {
         e.preventDefault();
+        setLoading(true);
+        await addProductToCart({ productId: id, quantity: 1 })
+        getCartProducts();
+        setLoading(false);
     }
+    console.log('cartData -> ',cartData)
     return(
         <>
         {
@@ -23,7 +32,15 @@ const ProductItem = ({item, keyVal, name, src, price, rating, className}) => {
                     </div>
                     <div className='bottom-part'>
                         <h4>&#x20B9;{price}</h4>
-                        <button onClick={addToCart} type='button' className='py-2 px-4 my-1 btn-primary'>Add to Cart</button>
+                        {
+                            loading ? 
+                            <BootstrapSpinner /> : 
+                            <button 
+                                onClick={e => addToCart(e,keyVal)} 
+                                type='button' 
+                                className='py-2 px-4 my-1 btn-primary'>Add to Cart
+                            </button>
+                        }                        
                         <Ratings rating={rating} />
                     </div>
                 </div>
@@ -40,7 +57,14 @@ ProductItem.propTypes = {
     price: PropTypes.number,
     rating: PropTypes.number, 
     className: PropTypes.string,
-    item: PropTypes.object
+    item: PropTypes.object,
+    addProductToCart: PropTypes.func,
+    getCartProducts: PropTypes.func,
+    cartData: PropTypes.array
 }
 
-export default ProductItem;
+const mapStateToProps = state => ({
+    cartData: state.cart
+})
+
+export default connect( mapStateToProps, { addProductToCart, getCartProducts } )(ProductItem);
