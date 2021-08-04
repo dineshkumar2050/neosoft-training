@@ -6,7 +6,7 @@ const initialState = {
     success: false,
     products: null,
     grandTotal: null,
-    allProductsQuantity: null 
+    allProductsQuantity: null || 0
 }
 
 export default function cart(state=initialState,action){

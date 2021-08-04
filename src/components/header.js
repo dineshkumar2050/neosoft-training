@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import './header.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -6,8 +6,9 @@ import { useHistory, Redirect } from 'react-router-dom';
 import store from '../store';
 import { LOGOUT } from '../actions/types';
 import { connect } from 'react-redux';
+import { getCartProducts } from '../actions/cart';
 
-const Header = ({ login: { isAuthenticated },cart }) => {
+const Header = ({ login: { isAuthenticated },cart: { allProductsQuantity }, getCartProducts }) => {
     const history = useHistory();
     const [isOpen,setIsOpen] = useState(true);
     const menuOpen = e => {
@@ -35,7 +36,12 @@ const Header = ({ login: { isAuthenticated },cart }) => {
             history.push({ pathname: '/' });
         }
     }
-    console.log('cart -> ',cart);
+    useEffect(() => {
+        if(isAuthenticated){
+            getCartProducts();
+        }
+    },[isAuthenticated])
+    console.log('cart -> ',allProductsQuantity);
     return(
         <header>
             <div className="brand">
@@ -59,25 +65,27 @@ const Header = ({ login: { isAuthenticated },cart }) => {
                         <input type="search" className="search" placeholder="search.." />
                     </form>
                 </div>
-                <Link to='/cart-products'>
-                    <div className="cart d-sm-inline-block d-none">
-                        <span className="iconify" data-icon="ant-design:shopping-cart-outlined" data-inline="false"></span>
-                        <span className={'cart-content'}>cart</span>
-                        <span className={'cart-products-count'}>{0}</span>
-                    </div>
-                </Link>
                 {
                     isAuthenticated &&
-                    <div className="dropdown d-sm-inline-block d-none btn-group">
-                        <button className="btn p-0 dropdown-toggle d-flex align-items-center py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span className="iconify" data-icon="ic:sharp-perm-contact-calendar" data-inline="false"></span>
-                            {/* <span className="iconify" data-icon="ic:outline-keyboard-arrow-down" data-inline="false"></span> */}
-                        </button>
-                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a onClick={() => history.push({ pathname: '/account' })} className="dropdown-item" href="#">Profile</a></li>
-                            <li><a onClick={logout} className="dropdown-item" href="#">Logout</a></li>
-                        </ul>
-                    </div>
+                    <>
+                        <Link to='/cart-products'>
+                            <div className="cart d-sm-inline-block d-none">
+                                <span className="iconify" data-icon="ant-design:shopping-cart-outlined" data-inline="false"></span>
+                                <span className={'cart-content'}>cart</span>
+                                <span className={'cart-products-count'}>{allProductsQuantity}</span>
+                            </div>
+                        </Link>
+                        <div className="dropdown d-sm-inline-block d-none btn-group">
+                            <button className="btn p-0 dropdown-toggle d-flex align-items-center py-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span className="iconify" data-icon="ic:sharp-perm-contact-calendar" data-inline="false"></span>
+                                {/* <span className="iconify" data-icon="ic:outline-keyboard-arrow-down" data-inline="false"></span> */}
+                            </button>
+                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a onClick={() => history.push({ pathname: '/account' })} className="dropdown-item" href="#">Profile</a></li>
+                                <li><a onClick={logout} className="dropdown-item" href="#">Logout</a></li>
+                            </ul>
+                        </div>
+                    </>
                 }
             </div>
         </header>
@@ -86,7 +94,8 @@ const Header = ({ login: { isAuthenticated },cart }) => {
 
 Header.propTypes = {
     productsInCart: PropTypes.number,
-    cart: PropTypes.object
+    cart: PropTypes.object,
+    getCartProducts: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -94,4 +103,4 @@ const mapStateToProps = state => ({
     cart: state.cart    
 })
 
-export default connect( mapStateToProps )(Header);
+export default connect( mapStateToProps, { getCartProducts } )(Header);

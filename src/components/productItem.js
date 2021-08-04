@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './productItem.scss';
 import Chair from '../assets/chair.webp';
@@ -7,17 +7,33 @@ import Ratings from './Ratings';
 import { connect } from 'react-redux';
 import { addProductToCart, getCartProducts } from '../actions/cart';
 import BootstrapSpinner from '../layout/BootstrapSpinner';
+import AddRemoveButton from './AddRemoveButton';
 
 const ProductItem = ({ cartData, addProductToCart, getCartProducts, item, keyVal, name, src, price, rating, className }) => {
     const [loading, setLoading] = useState(null);
-    const addToCart = async (e,id) => {
+    const { allProductsQuantity, products } = cartData;
+    const [productCount, setProductCount] = useState(null || 0);
+    const addToCart = async (e,id,type=null,quantity=null) => {
         e.preventDefault();
         setLoading(true);
-        await addProductToCart({ productId: id, quantity: 1 })
+        if(type === 'increment'){
+            await addProductToCart({ productId: id, quantity: quantity + 1 })
+        } else if(type === 'decrement'){
+            await addProductToCart({ productId: id, quantity: quantity - 1 })
+        } else {
+            await addProductToCart({ productId: id, quantity: 1 })
+        }
         getCartProducts();
         setLoading(false);
     }
-    console.log('cartData -> ',cartData)
+    useEffect(() => {
+        let product = products && products.length > 0 && products.find(product => product.productId._id === keyVal);
+        console.log('product',product);
+        if(product){
+            setProductCount(product.quantity);
+        }
+    },[allProductsQuantity]);
+    console.log('cartData -> ',cartData,products,keyVal);
     return(
         <>
         {
@@ -33,14 +49,26 @@ const ProductItem = ({ cartData, addProductToCart, getCartProducts, item, keyVal
                     <div className='bottom-part'>
                         <h4>&#x20B9;{price}</h4>
                         {
-                            loading ? 
-                            <BootstrapSpinner /> : 
-                            <button 
-                                onClick={e => addToCart(e,keyVal)} 
-                                type='button' 
-                                className='py-2 px-4 my-1 btn-primary'>Add to Cart
-                            </button>
-                        }                        
+                            productCount > 0 ?
+                            <AddRemoveButton
+                                quantity={productCount} 
+                                loading={loading} 
+                                setQuantity={addToCart}
+                                productId={keyVal}
+                                containerClass={'justify-content-center'}
+                            /> : 
+                            <>
+                                {
+                                    loading ? 
+                                    <BootstrapSpinner /> : 
+                                    <button 
+                                        onClick={e => addToCart(e,keyVal)} 
+                                        type='button' 
+                                        className='py-2 px-4 my-1 btn-primary'>Add to Cart
+                                    </button>
+                                }
+                            </>
+                        }                      
                         <Ratings rating={rating} />
                     </div>
                 </div>

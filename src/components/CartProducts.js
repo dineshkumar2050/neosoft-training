@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Chair from '../assets/chair.webp';
 import AddRemoveButton from './AddRemoveButton';
 
-function CartProducts({ data,getCartProducts,...props }) {
+function CartProducts({ cart,getCartProducts,...props }) {
     const [cartData, setCartData] = useState([]);
     const [screenSize, setScreenSize] = useState()
     let [quantity, setQuantity] = useState(3);
@@ -164,7 +164,7 @@ CartProducts.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.cart
+    cart: state.cart
 })
 
 export default connect( mapStateToProps ,{ getCartProducts })(CartProducts);

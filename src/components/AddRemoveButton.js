@@ -2,30 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './AddRemoveButton.css';
 import Button from './button';
+import BootstrapSpinner from '../layout/BootstrapSpinner';
 
-function AddRemoveButton({ quantity, setQuantity ,...props }) {
-    const addProduct = (e,type) => {
+function AddRemoveButton({ quantity, containerClass, productId, loading, setQuantity ,...props }) {
+    const addProduct = (e,id,type,quantity) => {
         e.preventDefault();
         if(type === 'increment'){
-            setQuantity(++quantity);
+            setQuantity(e,id,type,quantity);
         } else if(type === 'decrement'){
-            if(quantity > 0) setQuantity(--quantity);
+            if(quantity > 0) setQuantity(e,id,type,quantity);
         }
     }
     return (
-        <div className={'d-flex align-items-center'}>
+        <div className={`d-flex align-items-center ${containerClass}`}>
             <Button 
                 className={'change-button'} 
                 content={'-'} 
                 type={'button'} 
-                onClick={e => addProduct(e,'decrement')} 
+                onClick={e => addProduct(e,productId,'decrement',quantity)} 
             />
-            <span className={'quantity px-2 mx-2'}>{quantity}</span>
+            {
+                loading ? 
+                <BootstrapSpinner /> :
+                <span className={'quantity px-2 mx-2'}>{quantity}</span>
+            }
             <Button 
                 className={'change-button'} 
                 content={'+'} 
                 type={'button'} 
-                onClick={e => addProduct(e,'increment')} 
+                onClick={e => addProduct(e,productId,'increment',quantity)} 
             />
         </div>
     )
@@ -33,7 +38,10 @@ function AddRemoveButton({ quantity, setQuantity ,...props }) {
 
 AddRemoveButton.propTypes = {
     quantity: PropTypes.number,
-    setQuantity: PropTypes.func
+    setQuantity: PropTypes.func,
+    loading: PropTypes.bool,
+    productId: PropTypes.string,
+    containerClass: PropTypes.string
 }
 
 export default AddRemoveButton;
